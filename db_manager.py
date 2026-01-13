@@ -9,6 +9,13 @@ load_dotenv()
 URL = os.getenv("TURSO_URL")
 TOKEN = os.getenv("TURSO_TOKEN")
 
+if not URL or not TOKEN:
+    raise ValueError(
+        "TURSO_URL o TURSO_TOKEN no están configurados. "
+        "Si estás en local, revisa tu archivo .env. "
+        "Si estás en Streamlit Cloud, asegúrate de haber configurado los 'Secrets'."
+    )
+
 async def get_client():
     return libsql_client.create_client(url=URL, auth_token=TOKEN)
 
