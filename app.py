@@ -284,7 +284,7 @@ if is_admin():
             if existing_campaigns:
                 # campaigns: id, church_id, token, scenario, deadline, is_active
                 camp_data = []
-                base_url = "http://localhost:8501"
+                base_url = os.getenv("BASE_URL", "http://localhost:8501")
                 for c in existing_campaigns:
                     link = f"{base_url}/?t={c[2]}"
                     camp_data.append({
