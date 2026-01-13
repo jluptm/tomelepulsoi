@@ -1,0 +1,8 @@
+streamlit
+libsql-client
+pandas
+plotly
+python-dotenv
+streamlit-antd-components
+bcrypt
+pytest
