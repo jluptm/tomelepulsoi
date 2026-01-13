@@ -68,9 +68,15 @@ async def init_db_async():
             role TEXT,
             ministerios TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            first_saved_at TIMESTAMP,
             FOREIGN KEY (church_id) REFERENCES churches(id)
         )
         """)
+        # Migration: Add first_saved_at if it doesn't exist
+        try:
+            await client.execute("ALTER TABLE respondents ADD COLUMN first_saved_at TIMESTAMP")
+        except:
+            pass # Already exists
         await client.execute("""
         CREATE TABLE IF NOT EXISTS responses (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -202,6 +208,11 @@ async def save_responses_async(respondent_id, responses_list):
         for area_id, q_id, score, comment in responses_list:
             await client.execute("INSERT INTO responses (respondent_id, area_id, question_id, score, comment) VALUES (?, ?, ?, ?, ?)", 
                            (respondent_id, area_id, q_id, score, comment))
+        
+        # Set first_saved_at if not set
+        check = await client.execute("SELECT first_saved_at FROM respondents WHERE id = ?", (respondent_id,))
+        if check.rows and check.rows[0][0] is None:
+            await client.execute("UPDATE respondents SET first_saved_at = CURRENT_TIMESTAMP WHERE id = ?", (respondent_id,))
 
 def save_responses(respondent_id, responses_list):
     return asyncio.run(save_responses_async(respondent_id, responses_list))
