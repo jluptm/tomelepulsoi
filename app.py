@@ -77,7 +77,12 @@ with col1:
 with col2:
     st.markdown("<div class='main-header'>Tómale el pulso a la iglesia</div>", unsafe_allow_html=True)
     if current_church_name:
-        st.markdown(f"<div class='sub-header'>{current_church_name}</div>", unsafe_allow_html=True)
+        user_header = ""
+        if st.session_state.user:
+            # st.session_state.user index 4 is the name
+            u_name = st.session_state.user[4]
+            user_header = f" &nbsp; | &nbsp; 👤 {u_name}"
+        st.markdown(f"<div class='sub-header'>🏛️ {current_church_name}{user_header}</div>", unsafe_allow_html=True)
 
 # --- Helper Functions ---
 def is_admin():
