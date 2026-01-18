@@ -352,24 +352,24 @@ if not is_admin():
                 first_save_str = user[11] if len(user) > 11 else None
                 
                 can_edit = True
-                days_left = 3
+                days_left = 10
                 if first_save_str:
                     try:
                         first_save_dt = datetime.fromisoformat(first_save_str.replace("Z", "+00:00"))
                         elapsed = datetime.now() - first_save_dt
-                        if elapsed > timedelta(days=3):
+                        if elapsed > timedelta(days=10):
                             can_edit = False
                         else:
-                            days_left = 3 - elapsed.days
+                            days_left = 10 - elapsed.days
                     except:
                         pass
                 
                 if not can_edit:
-                    st.warning("⚠️ El periodo de edición (3 días) ha finalizado. Sus respuestas ahora son de solo lectura.")
+                    st.warning("⚠️ El periodo de edición (10 días) ha finalizado. Sus respuestas ahora son de solo lectura.")
                 elif first_save_str:
                     st.info(f"Periodo de edición activo. Le quedan aproximadamente **{max(0, days_left)} días**.")
                 else:
-                    st.info(f"Bienvenido, **{user_name}**. Una vez que guarde la encuesta por primera vez, tendrá 3 días para realizar cambios.")
+                    st.info(f"Bienvenido, **{user_name}**. Una vez que guarde la encuesta por primera vez, tendrá 10 días para realizar cambios.")
 
                 # Load existing responses ONCE
                 if not st.session_state.responses_loaded:
@@ -445,3 +445,4 @@ if not is_admin():
                      if ckey == c_info[3]:
                          show_enhanced_reports(cid, c_info[1])
                      else: st.error("Error")
+
