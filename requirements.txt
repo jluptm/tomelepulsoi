@@ -6,3 +6,4 @@ python-dotenv
 streamlit-antd-components
 bcrypt
 pytest
+wasenderapi
